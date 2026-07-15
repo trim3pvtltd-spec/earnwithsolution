@@ -14,18 +14,22 @@ import * as admin from 'firebase-admin';
  */
 @Injectable()
 export class FirebaseService implements OnModuleInit {
-  onModuleInit() {
-    if (!admin.apps.length) {
-      const privateKey = (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
-      admin.initializeApp({
-        credential: admin.credential.cert({
-          projectId: process.env.FIREBASE_PROJECT_ID,
-          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-          privateKey,
-        }),
-      });
-    }
+onModuleInit() {
+  if (!process.env.FIREBASE_PROJECT_ID) {
+    console.warn('Firebase not configured — OTP login and push notifications will not work until FIREBASE_* env vars are set.');
+    return;
   }
+  if (!admin.apps.length) {
+    const privateKey = (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey,
+      }),
+    });
+  }
+}
 
   async verifyIdToken(idToken: string) {
     try {
