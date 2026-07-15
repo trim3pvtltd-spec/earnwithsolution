@@ -17,7 +17,7 @@ export class AuthController {
   @Post('verify-otp')
   @HttpCode(HttpStatus.OK)
   verifyOtp(@Body() dto: VerifyOtpDto, @Req() req: Request) {
-    const ip = (req.headers['x-forwarded-for'] as string) || req.ip;
+    const ip = (req.headers['x-forwarded-for'] as string) || req.ip || '';
     return this.authService.verifyOtpAndLogin(dto, ip);
   }
 
