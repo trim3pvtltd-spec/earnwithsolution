@@ -1,0 +1,29 @@
+version: '3.8'
+
+# Local development only — for production use AWS RDS (Postgres) and
+# AWS ElastiCache (Redis) as noted in the .env.example / DEPLOYMENT_GUIDE.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ews_user
+      POSTGRES_PASSWORD: ews_password
+      POSTGRES_DB: earning_with_solution
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
