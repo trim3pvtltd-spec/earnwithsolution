@@ -4,8 +4,10 @@ import { NotificationsService } from './notifications.service';
 import { SmsProvider } from './providers/sms.provider';
 import { WhatsappProvider } from './providers/whatsapp.provider';
 import { EmailProvider } from './providers/email.provider';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
+  imports: [AuthModule],
   controllers: [NotificationsController],
   providers: [NotificationsService, SmsProvider, WhatsappProvider, EmailProvider],
   exports: [NotificationsService],
